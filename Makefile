@@ -22,3 +22,12 @@ BUILD_PACKAGE = $(REPOPATH)/cmd/gitcd
 
 gitcd: $(GO_FILES) $(BUILD_DIR)
 	go build -o $(BUILD_DIR)/$(PROJECT) $(BUILD_PACKAGE)
+
+$(BUILD_DIR):
+	mkdir -p $(BUILD_DIR)
+
+clean:
+	rm -rf $(BUILD_DIR)
+
+test:
+	go test -v `go list ./... | grep -v vendor`

@@ -19,7 +19,7 @@ package repository
 import (
   "regexp"
     "errors"
-)
+  )
 
 type Repository struct {
   Owner string
@@ -30,7 +30,7 @@ var PrefixProtocol = regexp.MustCompile(`(((git|ssh|http(s)?)://)?github\.com/)`
 var PrefixGit = regexp.MustCompile(`(git@github\.com:)`)
 var Prefix = regexp.MustCompile(`(` + PrefixProtocol.String() + `|` + PrefixGit.String() + `)?`)
 var RepositoryPart = regexp.MustCompile(`[\w-_]+`)
-var RepositoryRegex = regexp.MustCompile(`^` + PrefixProtocol.String() + `(?P<org>` + RepositoryPart.String() + `)/(?P<name>` + RepositoryPart.String() + `)(\.git)?$`)
+var RepositoryRegex = regexp.MustCompile(`^` + Prefix.String() + `(?P<owner>` + RepositoryPart.String() + `)/(?P<name>` + RepositoryPart.String() + `)(\.git)?$`)
 
 /**
  * Canonicalizes the repositoryString into a Repository.
@@ -45,9 +45,9 @@ func Canonicalize(repositoryString string) (Repository, error) {
     return Repository{}, errors.New(`repository not valid`)
   }
 
-  // Extracts the org and name from repositoryString.
+  // Extracts the owner and name from repositoryString.
   repositoryMatches := matchNamedGroups(repositoryString)
-  return Repository{Owner: repositoryMatches[`org`], Name: repositoryMatches[`name`]}, nil
+  return Repository{repositoryMatches[`owner`], repositoryMatches[`name`]}, nil
 }
 
 /**
