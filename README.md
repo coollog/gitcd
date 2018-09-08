@@ -6,6 +6,10 @@ Quickly navigate to your GitHub repositories.
 
 ### 1) Install `gitcd`.
 
+*TODO: Release binaries.*
+
+For now, you have to `go get -u github.com/coollog/gitcd`. `gitcd` will be at `$GOPATH/bin/gitcd` (default `~/go/bin/gitcd`). Make sure `gitcd` is on your `PATH`.
+
 ### 2) Add this function to your bash profile (`~/.bashrc` or `~/.bash_profile`):
 
 ```bash
