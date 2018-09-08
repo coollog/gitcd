@@ -17,10 +17,10 @@
 package main
 
 import (
-	"os"
-	"github.com/mitchellh/go-homedir"
-	"log"
-	"path"
+  "os"
+  "github.com/mitchellh/go-homedir"
+  "log"
+  "path"
 )
 
 /** Environment variable defining the home directory for gitcd. */
@@ -30,16 +30,16 @@ const GitcdHomeEnvvar = "GITCD_HOME"
  * Gets the gitcd home directory.
  */
 func getGitcdHome() string {
-	gitcdHome := os.Getenv(GitcdHomeEnvvar)
-	if len(gitcdHome) > 0 {
-		return gitcdHome
-	}
-	return getDefaultGitcdHome()
+  gitcdHome := os.Getenv(GitcdHomeEnvvar)
+  if len(gitcdHome) > 0 {
+  	return gitcdHome
+  }
+  return getDefaultGitcdHome()
 }
 func getDefaultGitcdHome() string {
-	userHome, err := homedir.Dir()
-	if err != nil {
-		log.Fatal(err)
-	}
-	return path.Join(userHome, "gitcd")
+  userHome, err := homedir.Dir()
+  if err != nil {
+  	log.Fatal(err)
+  }
+  return path.Join(userHome, "gitcd")
 }
