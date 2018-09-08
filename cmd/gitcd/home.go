@@ -32,14 +32,14 @@ const GitcdHomeEnvvar = "GITCD_HOME"
 func getGitcdHome() string {
   gitcdHome := os.Getenv(GitcdHomeEnvvar)
   if len(gitcdHome) > 0 {
-  	return gitcdHome
+    return gitcdHome
   }
   return getDefaultGitcdHome()
 }
 func getDefaultGitcdHome() string {
   userHome, err := homedir.Dir()
   if err != nil {
-  	log.Fatal(err)
+    log.Fatal(err)
   }
   return path.Join(userHome, "gitcd")
 }
