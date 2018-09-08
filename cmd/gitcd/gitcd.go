@@ -17,10 +17,10 @@
 package main
 
 import (
-	"os"
-				"fmt"
+  "os"
+  "fmt"
   "github.com/coollog/gitcd/cmd/gitcd/repository"
-	"log"
+  "log"
   "path"
   "path/filepath"
 )
@@ -40,31 +40,31 @@ If the repository does not exist, clones the repository.
 `
 
 func main() {
-	switch len(os.Args) {
-	case 2:
+  switch len(os.Args) {
+  case 2:
     repositoryString := os.Args[1]
-		if gitcd(repositoryString) {
-		  os.Exit(0)
+  if gitcd(repositoryString) {
+    os.Exit(0)
     }
 
-	default:
-		showUsage()
-	}
+  default:
+  showUsage()
+  }
   os.Exit(1)
 }
 
 func gitcd(repositoryString string) bool {
-	// Gets the gitcd home directory.
-	gitcdHome := getGitcdHome()
+  // Gets the gitcd home directory.
+  gitcdHome := getGitcdHome()
 
-	// Parses the repository string into a canonicalized form.
-	canonicalRepository, err := repository.Canonicalize(repositoryString)
-	if err != nil {
-		log.Fatal(err.Error())
-		return false
-	}
+  // Parses the repository string into a canonicalized form.
+  canonicalRepository, err := repository.Canonicalize(repositoryString)
+  if err != nil {
+  log.Fatal(err.Error())
+  return false
+  }
 
-	// Checks if the repository exists.
+  // Checks if the repository exists.
   repositoryDirectory := path.Join(gitcdHome, canonicalRepository.Owner, canonicalRepository.Name)
   if _, err := os.Stat(repositoryDirectory); os.IsNotExist(err) {
     // Repository doesn't exist, clone it.
@@ -83,5 +83,5 @@ func gitcd(repositoryString string) bool {
 }
 
 func showUsage() {
-	fmt.Println(USAGE)
+  fmt.Println(USAGE)
 }
