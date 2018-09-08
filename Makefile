@@ -26,6 +26,9 @@ gitcd: $(GO_FILES) $(BUILD_DIR)
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
 
+install: $(GO_FILES) $(BUILD_DIR)
+	go install $(BUILD_PACKAGE)
+
 clean:
 	rm -rf $(BUILD_DIR)
 

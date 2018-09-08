@@ -21,39 +21,65 @@ import (
 				"fmt"
   "github.com/coollog/gitcd/cmd/gitcd/repository"
 	"log"
+  "path"
+  "path/filepath"
 )
 
 const USAGE = `Quickly navigate to your GitHub repositories.
 
 Usage:
-  gitcd [repository] - goes to the directory for that repository
+  1) Add this function to your bash profile (~/.bashrc or ~/.bash_profile):
+    
+    gcd() { gitcd "$@" && cd ` + "`" + `gitcd "$@"` + "`" + `; }
 
-  Repositories live under $GITCD_HOME.
+  2) gcd [repository] - goes to the directory for that repository
 
-  If the repository does not exist, clones the repository.
+Repositories live under $GITCD_HOME.
+
+If the repository does not exist, clones the repository.
 `
 
 func main() {
 	switch len(os.Args) {
 	case 2:
     repositoryString := os.Args[1]
-		gitcd(repositoryString)
+		if gitcd(repositoryString) {
+		  os.Exit(0)
+    }
 
 	default:
 		showUsage()
 	}
+  os.Exit(1)
 }
 
-func gitcd(repositoryString string) {
+func gitcd(repositoryString string) bool {
+	// Gets the gitcd home directory.
 	gitcdHome := getGitcdHome()
-  fmt.Println("gitcd home: " + gitcdHome)
 
-	repo, err := repository.Canonicalize(repositoryString)
+	// Parses the repository string into a canonicalized form.
+	canonicalRepository, err := repository.Canonicalize(repositoryString)
 	if err != nil {
 		log.Fatal(err.Error())
+		return false
 	}
 
-	fmt.Printf("%#v\n", repo)
+	// Checks if the repository exists.
+  repositoryDirectory := path.Join(gitcdHome, canonicalRepository.Owner, canonicalRepository.Name)
+  if _, err := os.Stat(repositoryDirectory); os.IsNotExist(err) {
+    // Repository doesn't exist, clone it.
+    log.Fatal(`Cannot clone repository - unimplemented`)
+    return false
+  }
+
+  absoluteRepositoryDirectory, err := filepath.Abs(repositoryDirectory)
+  if err != nil {
+    log.Fatalf("Cannot resolve directory `%s`: %s", repositoryDirectory, err.Error())
+    return false
+  }
+
+  fmt.Println(absoluteRepositoryDirectory)
+  return true
 }
 
 func showUsage() {
