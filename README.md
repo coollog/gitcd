@@ -23,4 +23,4 @@ gcd coollog/gitcd
 
 ## Configuration
 
-Set `GITCD_HOME` to change the root directory for the cloned repositories.
+Set `GITCD_HOME` to change the root directory for the cloned repositories. By default, `gitcd` uses `~/gitcd`.
