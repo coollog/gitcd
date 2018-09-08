@@ -16,6 +16,46 @@
 
 package main
 
+import (
+	"os"
+				"fmt"
+  "github.com/coollog/gitcd/cmd/gitcd/repository"
+	"log"
+)
+
+const USAGE = `Quickly navigate to your GitHub repositories.
+
+Usage:
+  gitcd [repository] - goes to the directory for that repository
+
+  Repositories live under $GITCD_HOME.
+
+  If the repository does not exist, clones the repository.
+`
+
 func main() {
-	
+	switch len(os.Args) {
+	case 2:
+    repositoryString := os.Args[1]
+		gitcd(repositoryString)
+
+	default:
+		showUsage()
+	}
+}
+
+func gitcd(repositoryString string) {
+	gitcdHome := getGitcdHome()
+  fmt.Println("gitcd home: " + gitcdHome)
+
+	repo, err := repository.Canonicalize(repositoryString)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
+	fmt.Printf("%#v\n", repo)
+}
+
+func showUsage() {
+	fmt.Println(USAGE)
 }
