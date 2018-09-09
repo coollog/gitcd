@@ -19,11 +19,24 @@ package repository
 import (
   "regexp"
     "errors"
-  )
+  "path"
+  "os"
+)
 
 type Repository struct {
   Owner string
   Name  string
+}
+
+/** Repository with a directory path. */
+type ResolvedRepository struct {
+  Repository Repository
+  Directory  string
+}
+
+func (rr *ResolvedRepository) Exists() bool {
+  _, err := os.Stat(rr.Directory)
+  return !os.IsNotExist(err)
 }
 
 var PrefixProtocol = regexp.MustCompile(`(((git|ssh|http(s)?)://)?github\.com/)`)
@@ -48,6 +61,14 @@ func Canonicalize(repositoryString string) (Repository, error) {
   // Extracts the owner and name from repositoryString.
   repositoryMatches := matchNamedGroups(repositoryString)
   return Repository{repositoryMatches[`owner`], repositoryMatches[`name`]}, nil
+}
+
+/** Resolves the repo directory under the absoluteGitcdHome. */
+func Resolve(gitcdHome string, repo Repository) ResolvedRepository {
+  return ResolvedRepository{
+    repo,
+    path.Join(gitcdHome, repo.Owner, repo.Name),
+  }
 }
 
 /**

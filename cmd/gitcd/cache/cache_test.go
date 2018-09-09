@@ -24,8 +24,8 @@ import (
 
 func TestBump(t *testing.T) {
   repoCache := RepoCache {
-    apiVersion: 1,
-    nameMap: map[string][]string{
+    ApiVersion: 1,
+    NameMap: map[string][]string{
       `gitcd`: {`coollog`, `imposter`},
       `bar`: {`foo`},
     },
@@ -44,7 +44,7 @@ func (repoCache *RepoCache) testBump(owner string, name string, expectedOwnerLis
     Name: name,
   }
   repoCache.Bump(repoToBump)
-  ownerList, ok := repoCache.nameMap[name]
+  ownerList, ok := repoCache.NameMap[name]
   if !ok {
     t.Errorf("Bump did not work: %#v\n", repoToBump)
   }

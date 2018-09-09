@@ -20,6 +20,9 @@ import (
   "io/ioutil"
   "gopkg.in/yaml.v2"
   "github.com/coollog/gitcd/cmd/gitcd/repository"
+  "os"
+  "errors"
+  "fmt"
 )
 
 // The cache stores the usages of certain repositories in order to find repositories by a shorter name.
@@ -42,8 +45,8 @@ import (
  *   - cat
  */
 type RepoCache struct {
-  apiVersion int
-  nameMap map[string][]string
+  ApiVersion int
+  NameMap    map[string][]string
 }
 
 /** Bumps the repo to the top. */
@@ -53,7 +56,7 @@ func (r *RepoCache) Bump(repoToBump repository.Repository) {
   newOwnerList = append(newOwnerList, repoToBump.Owner)
 
   // Collects current repos to map.
-  if owners, ok := r.nameMap[repoToBump.Name]; ok {
+  if owners, ok := r.NameMap[repoToBump.Name]; ok {
     ownerMap := make(map[string]bool)
     ownerMap[repoToBump.Owner] = true
 
@@ -65,11 +68,26 @@ func (r *RepoCache) Bump(repoToBump repository.Repository) {
     }
   }
 
-  r.nameMap[repoToBump.Name] = newOwnerList
+  r.NameMap[repoToBump.Name] = newOwnerList
+}
+
+/** Gets the list of owners to try for the repoName, in the order in which to try them. */
+func (r *RepoCache) FindOwners(repoName string) []string {
+  if owners, ok := r.NameMap[repoName]; ok {
+    return owners
+  }
+  return []string{}
 }
 
 /** Loads the gitcdFile into the RepoCache structure. */
 func Load(gitcdFile string) (RepoCache, error) {
+  if _, err := os.Stat(gitcdFile); os.IsNotExist(err) {
+    return RepoCache{
+      ApiVersion: 1,
+      NameMap:    make(map[string][]string),
+    }, nil
+  }
+
   gitcdFileContents, err := ioutil.ReadFile(gitcdFile)
   if err != nil {
     return RepoCache{}, err
@@ -80,6 +98,13 @@ func Load(gitcdFile string) (RepoCache, error) {
   err = yaml.Unmarshal(gitcdFileContents, &repoCache)
   if err != nil {
     return RepoCache{}, err
+  }
+
+  if repoCache.ApiVersion != 1 {
+    return RepoCache{}, errors.New(fmt.Sprintf(".gitcd file at `%s` has unknown apiVersion: %s", gitcdFile, repoCache.ApiVersion))
+  }
+  if repoCache.NameMap == nil {
+    return RepoCache{}, errors.New(fmt.Sprintf(".gitcd file at `%s` has nil nameMap", gitcdFile))
   }
 
   return repoCache, nil

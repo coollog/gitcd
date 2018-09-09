@@ -24,9 +24,9 @@ import (
   "log"
 )
 
-func Clone(absoluteGitcdHome string, repositoryString string, repository Repository) error {
+func Clone(gitcdHome string, repositoryString string, repository Repository) error {
   // Makes all the directories up to the owner directory.
-  ownerDirectory := path.Join(absoluteGitcdHome, repository.Owner)
+  ownerDirectory := path.Join(gitcdHome, repository.Owner)
   err := os.MkdirAll(ownerDirectory, 0755)
   if err != nil {
     return err
