@@ -64,21 +64,24 @@ func gitcd(repositoryString string) bool {
   return false
   }
 
+  absoluteGitcdHome, err := filepath.Abs(gitcdHome)
+  if err != nil {
+    log.Fatalf("Cannot resolve directory `%s`: %s", gitcdHome, err.Error())
+    return false
+  }
+
   // Checks if the repository exists.
-  repositoryDirectory := path.Join(gitcdHome, canonicalRepository.Owner, canonicalRepository.Name)
+  repositoryDirectory := path.Join(absoluteGitcdHome, canonicalRepository.Owner, canonicalRepository.Name)
   if _, err := os.Stat(repositoryDirectory); os.IsNotExist(err) {
     // Repository doesn't exist, clone it.
-    log.Fatal(`Cannot clone repository - unimplemented`)
-    return false
+    err := repository.Clone(absoluteGitcdHome, repositoryString, canonicalRepository)
+    if err != nil {
+      log.Fatalf("Could not clone repository `%s`:%s", repositoryString, err.Error())
+      return false
+    }
   }
 
-  absoluteRepositoryDirectory, err := filepath.Abs(repositoryDirectory)
-  if err != nil {
-    log.Fatalf("Cannot resolve directory `%s`: %s", repositoryDirectory, err.Error())
-    return false
-  }
-
-  fmt.Println(absoluteRepositoryDirectory)
+  fmt.Println(repositoryDirectory)
   return true
 }
 

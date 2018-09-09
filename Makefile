@@ -26,6 +26,9 @@ gitcd: $(GO_FILES) $(BUILD_DIR)
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
 
+fmt:
+	find . -name "*.go" | grep -v vendor/ | xargs gofmt -l -s
+
 install: $(GO_FILES) $(BUILD_DIR)
 	go install $(BUILD_PACKAGE)
 
