@@ -4,7 +4,7 @@ Quickly navigate to your GitHub repositories.
 
 ## Examples
 
-Without `gitcd`, you may need to manage multiple each clone manually:
+Without `gitcd`, you may need to manage multiple GitHub repo clones manually:
 
 ```bash
 mkdir -p ~/github/coollog
