@@ -33,26 +33,11 @@ gcd coollog/gitcd # Clones https://github.com/coollog/gitcd.git
 # Make some commits.
 gcd foo/bar       # Clones https://github.com/foo/bar.git
 # Make some commits.
-gcd coollog/gitcd
-# Some days later.
-gcd foo/bar
-...
-```
-
-<!-- REPLACE WHEN READY
-With `gitcd`, this becomes just:
-
-```bash
-gcd coollog/gitcd # Clones https://github.com/coollog/gitcd.git
-# Make some commits.
-gcd foo/bar       # Clones https://github.com/foo/bar.git
-# Make some commits.
 gcd gitcd
 # Some days later.
 gcd bar
 ...
 ```
--->
 
 ## Usage
 
@@ -81,7 +66,6 @@ gcd coollog/gitcd
 
 Set `GITCD_HOME` to change the root directory for the cloned repositories. By default, `gitcd` uses `~/gitcd`.
 
-<!--
 ## How it works
 
 ```bash
@@ -97,4 +81,3 @@ gcd gitcd # If you have used repos under coollog/ before.
 ```
 
 When the name is ambiguous (just the repo name like `gitcd` rather than `coollog/gitcd`), `gitcd` tries to find the name under owners in the order in which they were last used. For example, if `gitcd` had used `foo/`, `bar/`, and `cat/` (in that order), `gcd dog` would try to find `dog` in `cat/dog`, then `bar/dog`, then `foo/dog`. 
--->
