@@ -39,6 +39,21 @@ gcd foo/bar
 ...
 ```
 
+<!-- REPLACE WHEN READY
+With `gitcd`, this becomes just:
+
+```bash
+gcd coollog/gitcd # Clones https://github.com/coollog/gitcd.git
+# Make some commits.
+gcd foo/bar       # Clones https://github.com/foo/bar.git
+# Make some commits.
+gcd gitcd
+# Some days later.
+gcd bar
+...
+```
+-->
+
 ## Usage
 
 ### 1) Install `gitcd`.
