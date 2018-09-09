@@ -12,13 +12,18 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
+GOOS ?= $(shell go env GOOS)
+GOARCH = amd64
 BUILD_DIR ?= ./out
-GO_FILES := $(shell find . -type f -name '*.go' -not -path "./vendor/*")
 
 ORG := github.com/coollog
 PROJECT := gitcd
 REPOPATH ?= $(ORG)/$(PROJECT)
+
+SUPPORTED_PLATFORMS := linux-$(GOARCH) darwin-$(GOARCH) windows-$(GOARCH).exe
 BUILD_PACKAGE = $(REPOPATH)/cmd/gitcd
+
+GO_FILES := $(shell find . -type f -name '*.go' -not -path "./vendor/*")
 
 gitcd: $(GO_FILES) $(BUILD_DIR)
 	go build -o $(BUILD_DIR)/$(PROJECT) $(BUILD_PACKAGE)
@@ -30,7 +35,18 @@ fmt:
 	find . -name "*.go" | grep -v vendor/ | xargs gofmt -l -s
 
 install: $(GO_FILES) $(BUILD_DIR)
-	go install $(BUILD_PACKAGE)
+	GOOS=$(GOOS) GOARCH=$(GOARCH) CGO_ENABLED=0 go install $(BUILD_PACKAGE)
+
+
+# RELEASE >>
+$(BUILD_DIR)/$(PROJECT)-%-$(GOARCH): $(GO_FILES) $(BUILD_DIR)
+	GOOS=$* GOARCH=$(GOARCH) CGO_ENABLED=0 go build -o $@ $(BUILD_PACKAGE)
+
+%.exe: %
+	cp $< $@
+
+cross: $(foreach platform, $(SUPPORTED_PLATFORMS), $(BUILD_DIR)/$(PROJECT)-$(platform))
+# << RELEASE
 
 clean:
 	rm -rf $(BUILD_DIR)

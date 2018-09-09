@@ -43,9 +43,28 @@ gcd bar
 
 ### 1) Install `gitcd`.
 
-*TODO: Release binaries.*
+#### Linux
 
-For now, you have to `go get -u github.com/coollog/gitcd`. `gitcd` will be at `$GOPATH/bin/gitcd` (default `~/go/bin/gitcd`). Make sure `gitcd` is on your `PATH`.
+```bash
+curl -Lo gitcd https://storage.googleapis.com/gitcd/gitcd-linux-amd64 && chmod +x gitcd && sudo mv gitcd /usr/local/bin
+```
+
+#### macOS
+
+```bash
+curl -Lo gitcd https://storage.googleapis.com/gitcd/gitcd-darwin-amd64 && chmod +x gitcd && sudo mv gitcd /usr/local/bin
+```
+
+#### Windows
+
+Download the latest Windows build: https://storage.googleapis.com/gitcd/gitcd-windows-amd64.exe
+
+#### Build from source
+
+```bash
+go get -u github.com/coollog/gitcd
+# `gitcd` will be at `$GOPATH/bin/gitcd`
+```
 
 ### 2) Add this function to your bash profile (`~/.bashrc` or `~/.bash_profile`):
 
