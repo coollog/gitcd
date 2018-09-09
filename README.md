@@ -2,6 +2,43 @@
 
 Quickly navigate to your GitHub repositories.
 
+## Examples
+
+Without `gitcd`, you may need to manage multiple each clone manually:
+
+```bash
+mkdir -p ~/github/coollog
+cd ~/github/coollog
+git clone https://github.com/coollog/gitcd.git
+cd gitcd
+# Now make some commits.
+# Time to work on another repo.
+mkdir -p ~/github/foo
+git clone -C ~/github/foo/bar https://github.com/foo/bar.git
+cd ~/github/foo/bar
+# Make some edits.
+# Now time to go back to coollog/gitcd. Where is it again? Oh, right.
+cd ~/github/coollog/gitcd
+# Some days later. Did I clone foo/bar already?
+ls ~/github/foo/bar
+# Ah okay, time to go work on that.
+cd ~/github/foo/bar
+...
+```
+
+With `gitcd`, this becomes just:
+
+```bash
+gcd coollog/gitcd # Clones https://github.com/coollog/gitcd.git
+# Make some commits.
+gcd foo/bar       # Clones https://github.com/foo/bar.git
+# Make some commits.
+gcd coollog/gitcd
+# Some days later.
+gcd foo/bar
+...
+```
+
 ## Usage
 
 ### 1) Install `gitcd`.
