@@ -2,6 +2,8 @@
 
 Quickly navigate to your GitHub repositories.
 
+[![Gitter chat](https://badges.gitter.im/coollog/gitcd.png)](https://gitter.im/coollog/gitcd)
+
 ## Examples
 
 Without `gitcd`, you may need to manage multiple GitHub repo clones manually:
