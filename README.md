@@ -65,3 +65,21 @@ gcd coollog/gitcd
 ## Configuration
 
 Set `GITCD_HOME` to change the root directory for the cloned repositories. By default, `gitcd` uses `~/gitcd`.
+
+<!--
+## How it works
+
+```bash
+# These all navigate to the directory for the cloned repo, cloning the repo if necessary.
+gcd https://github.com/coollog/gitcd.git
+gcd http://github.com/coollog/gitcd.git
+gcd https://github.com/coollog/gitcd
+gcd git@github.com:coollog/gitcd.git
+gcd github.com/coollog/gitcd
+gcd coollog/gitcd.git
+gcd coollog/gitcd
+gcd gitcd # If you have used repos under coollog/ before.
+```
+
+When the name is ambiguous (just the repo name like `gitcd` rather than `coollog/gitcd`), `gitcd` tries to find the name under owners in the order in which they were last used. For example, if `gitcd` had used `foo/`, `bar/`, and `cat/` (in that order), `gcd dog` would try to find `dog` in `cat/dog`, then `bar/dog`, then `foo/dog`. 
+-->
