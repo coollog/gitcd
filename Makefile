@@ -46,6 +46,9 @@ $(BUILD_DIR)/$(PROJECT)-%-$(GOARCH): $(GO_FILES) $(BUILD_DIR)
 	cp $< $@
 
 cross: $(foreach platform, $(SUPPORTED_PLATFORMS), $(BUILD_DIR)/$(PROJECT)-$(platform))
+
+release: cross
+	gsutil cp out/gitcd-* gs://gitcd
 # << RELEASE
 
 clean:

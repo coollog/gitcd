@@ -75,8 +75,8 @@ go get -u github.com/coollog/gitcd
 This adds `gcd` as a `bash` function.
 
 ```bash
-[ -f ~/.bashrc ] && echo 'gcd() { gitcd "$@" && cd `gitcd "$@"`; }' >> ~/.bashrc && . ~/.bashrc
-[ -f ~/.bash_profile ] && echo 'gcd() { gitcd "$@" && cd `gitcd "$@"`; }' >> ~/.bash_profile && . ~/.bash_profile
+[ -f ~/.bashrc ] && echo 'gcd() { GITCD_GCD=1 gitcd "$@" && cd `gitcd "$@"`; }' >> ~/.bashrc && . ~/.bashrc
+[ -f ~/.bash_profile ] && echo 'gcd() { GITCD_GCD=1 gitcd "$@" && cd `gitcd "$@"`; }' >> ~/.bash_profile && . ~/.bash_profile
 ```
 
 ### 3) Use `gcd` to navigate to a repository.

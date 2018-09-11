@@ -21,25 +21,41 @@ import (
   "fmt"
   "github.com/coollog/gitcd/cmd/gitcd/repository"
   "log"
-      "strings"
+  "strings"
   "github.com/coollog/gitcd/cmd/gitcd/cache"
   "github.com/coollog/gitcd/cmd/gitcd/home"
   "io/ioutil"
   "path"
 )
 
-const Usage = `Quickly navigate to your GitHub repositories.
+/** Environment variable hinting that gcd has been installed properly. */
+const GitcdGcd = `GITCD_GCD`
 
-Usage:
+const UsageGitcd = `Quickly navigate to your GitHub repositories.
+
+Install 'gcd' to use gitcd smoothly:
+
   1) Add this function to your bash profile (~/.bashrc or ~/.bash_profile):
     
-    gcd() { gitcd "$@" && cd ` + "`" + `gitcd "$@"` + "`" + `; }
+    gcd() { GITCD_GCD=1 gitcd "$@" && cd ` + "`" + `gitcd "$@"` + "`" + `; }
 
   2) gcd [repository] - goes to the directory for that repository
 
-Repositories live under $GITCD_HOME.
+Repositories live under $GITCD_HOME. If the repository does not exist, clones the repository.
+`
 
-If the repository does not exist, clones the repository.
+const UsageGcd = `Usage:
+
+  gcd [repository] - goes to the directory for that repository
+
+Examples:
+
+  gcd https://github.com/coollog/gitcd
+  gcd coollog/gitcd
+  gcd gitcd
+  GITCD_HOME=$GOPATH/src/github.com gcd coollog/gitcd
+
+Repositories live under $GITCD_HOME. If the repository does not exist, clones the repository.
 `
 
 func main() {
@@ -51,7 +67,12 @@ func main() {
     }
 
   default:
-    showUsage()
+    if len(os.Getenv(GitcdGcd)) > 0 {
+      fmt.Println(UsageGcd)
+    } else {
+      fmt.Println(UsageGitcd)
+    }
+
     err := showClonedRepositories()
     if err != nil {
       log.Fatal(err)
@@ -142,10 +163,6 @@ func gitcd(repositoryString string) bool {
   // Prints the repo directory.
   fmt.Println(resolvedRepository.Directory)
   return true
-}
-
-func showUsage() {
-  fmt.Println(Usage)
 }
 
 /** Shows all the cloned repos. */
