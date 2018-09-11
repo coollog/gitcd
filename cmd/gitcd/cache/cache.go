@@ -101,7 +101,7 @@ func Load(gitcdFile string) (RepoCache, error) {
   }
 
   if repoCache.ApiVersion != 1 {
-    return RepoCache{}, errors.New(fmt.Sprintf(".gitcd file at `%s` has unknown apiVersion: %s", gitcdFile, repoCache.ApiVersion))
+    return RepoCache{}, errors.New(fmt.Sprintf(".gitcd file at `%s` has unknown apiVersion: %d", gitcdFile, repoCache.ApiVersion))
   }
   if repoCache.NameMap == nil {
     return RepoCache{}, errors.New(fmt.Sprintf(".gitcd file at `%s` has nil nameMap", gitcdFile))
