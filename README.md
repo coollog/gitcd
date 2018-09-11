@@ -48,15 +48,15 @@ gcd bar
 #### Linux
 
 ```bash
-curl -Lo gitcd https://storage.googleapis.com/gitcd/gitcd-linux-amd64 && \
-    chmod +x gitcd && sudo mv gitcd /usr/local/bin
+curl -Lo ./gitcd https://storage.googleapis.com/gitcd/gitcd-linux-amd64 && \
+    chmod +x ./gitcd && sudo mv ./gitcd /usr/local/bin
 ```
 
 #### macOS
 
 ```bash
-curl -Lo gitcd https://storage.googleapis.com/gitcd/gitcd-darwin-amd64 && \
-    chmod +x gitcd && sudo mv gitcd /usr/local/bin
+curl -Lo ./gitcd https://storage.googleapis.com/gitcd/gitcd-darwin-amd64 && \
+    chmod +x ./gitcd && sudo mv ./gitcd /usr/local/bin
 ```
 
 #### Windows
@@ -103,6 +103,12 @@ gcd github.com/coollog/gitcd
 gcd coollog/gitcd.git
 gcd coollog/gitcd
 gcd gitcd # If you have used repos under coollog/ before.
+
+# This makes another clone under ~/github2.
+GITCD_HOME=~/github2 gcd coollog/gitcd
+
+# This navigates to the directory in your GOPATH.
+GITCD_HOME=$GOPATH/src/github.com gcd coollog/gitcd
 ```
 
 When the name is ambiguous (just the repo name like `gitcd` rather than `coollog/gitcd`), `gitcd` tries to find the name under owners in the order in which they were last used. For example, if `gitcd` had used `foo/`, `bar/`, and `cat/` (in that order), `gcd dog` would try to find `dog` in `cat/dog`, then `bar/dog`, then `foo/dog`. 
